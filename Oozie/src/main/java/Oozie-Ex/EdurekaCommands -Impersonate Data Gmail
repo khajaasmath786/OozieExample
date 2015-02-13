@@ -1,0 +1,45 @@
+Firstly, stop oozie if it’s running.
+
+        Command: cd /usr/lib/oozie-4.0.0/
+        Command: ./bin/oozie-stop.sh
+
+Make the below three changes needs to be done.
+
+1. 
+   Edit hadoop’s core-site.xml
+                   Command: sudo gedit /usr/lib/hadoop-2.2.0/etc/hadoop/core-site.xml
+                    
+ 
+
+Remove oozie and put edureka as mentioned in below screenshot, save the file and close it.
+                       
+              
+
+Restart the cluster.
+               Command: sudo service hadoop-master stop
+               Command: sudo service hadoop-master start
+               Command: hadoop dfsadmin -safemode leave
+
+2
+Edit your job.properties and workflow.xml files. Use jobTracker port as 8032 in both the files and oozie.wf.application.path as ${nameNode}/WordCountTest as mentioned in below snapshots.
+
+                Command: sudo gedit Desktop/LMS/Oozie/WordCountTest/job.properties
+
+                
+
+               Command: sudo gedit Desktop/LMS/Oozie/WordCountTest/workflow.xml
+
+  
+
+Now you need to transfer the WordCountTest directory on hdfs ( / ).
+              Command: hadoop dfs -put Desktop/LMS/Oozie/WordCountTest /
+
+3
+Giving permissions to Oozie directory.
+                 Command: sudo chmod -R 777 /usr/lib/oozie-4.0.0
+                 Command: sudo chown -R edureka /usr/lib/oozie-4.0.0
+Now change the directory to Oozie and start it.
+                 Command: cd /usr/lib/oozie-4.0.0/
+                 Command: ./bin/oozie-start.sh
+Run the oozie command.
+      Command: oozie job -oozie http://localhost:11000/oozie -config /home/edureka/Desktop/LMS/Oozie/WordCountTest/job.properties -run

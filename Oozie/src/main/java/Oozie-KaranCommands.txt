@@ -1,0 +1,58 @@
+--Demo
+--MR program
+hadoop fs -mkdir /module10/project/input
+
+hadoop fs -put social-odp-2k9_annotations.xml /module10/project/input
+
+hadoop jar review.jar com.edureka.review.ImportReview /module10/project/input /module10/project/out/
+
+hadoop jar /home/edureka/Lunoworkspace/HadoopRealTimeProject/src/main/java/KaranDataSet-Commands/review.jar com.samar.review.ImportReview /module10/project/input /module10/project/out/
+
+--2. Pig program
+
+
+pig review.pig
+
+--3 Hive Program
+--hive
+
+hive -f review.hql
+
+
+
+--clean output
+hadoop fs -rmr /module10/project/out/
+hadoop fs -rmr /tmp/url_cat/
+hadoop fs -rmr /tmp/url_review_distict
+hadoop fs -rmr /tmp/reviewfinal
+
+hadoop fs -rmr /user/edureka/flume/
+
+
+--Oozie
+8) To start Oozie, follow below steps:
+
+	i) cd /usr/lib/oozie-4.0.0/
+
+       ii) ./bin/oozie-start.sh 
+
+   Now open mozilla browser in your VM, and check below URL, you should get Oozie Web Console.
+
+	localhost:11000
+
+
+---4.sqoop
+--add mysql connector to lib folder
+sudo cp mysql-connector-java-5.1.26-bin.jar /usr/lib/sqoop/lib/
+
+cd /usr/lib/sqoop-1.4.4
+
+GRANT ALL PRIVILEGES ON *.* TO root@192.168.150.1 IDENTIFIED BY 'root' WITH GRANT OPTION;
+
+bin/sqoop export --connect jdbc:mysql://192.168.38.1/test  --table review_stg   --export-dir /tmp/reviewfinal/ --username root -P --fields-terminated-by '\001' 
+
+INSERT INTO review(category,url,positive,negative,total,HASH)
+SELECT * FROM `review_stg`
+
+
+
