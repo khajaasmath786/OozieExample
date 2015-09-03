@@ -18,7 +18,12 @@ pig review.pig
 
 hive -f review.hql
 
+--3.Oozie Program
+command -  oozie job -oozie config jobID
 
+--4 Cassandra Commands
+bin/cqlsh in casandra
+cqlsh commands
 
 --clean output
 hadoop fs -rmr /module10/project/out/
